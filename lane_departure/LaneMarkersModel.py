@@ -3,6 +3,8 @@ Created on Nov 26, 2011
 
 @author: Dima
 '''
+#!/bin/python
+
 import cv2 as cv
 import numpy as np
 
