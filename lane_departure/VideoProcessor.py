@@ -1,4 +1,4 @@
-import cv2 as cv
+import cv2
 from LaneMarkersModel import LaneMarkersModel
 from LaneMarkersModel import normalize
 import numpy as np
@@ -7,13 +7,13 @@ from LineDetector import LineDetector
 
 #Initialize video input
 #stream = cv.VideoCapture(0) #6 7 8
-stream = cv.VideoCapture("T:\_DIMA_DATA\Video\LaneDepartureWarningTestVideo\converted\out6.avi") #6 7 8
+stream = cv2.VideoCapture("T:\_DIMA_DATA\Video\LaneDepartureWarningTestVideo\converted\out6.avi") #6 7 8
 if stream.isOpened() == False:
     print "Cannot open input video"
     exit()
 
 #Initialize video writing
-videoWriter = cv.VideoWriter('out7Test1.avi', cv.cv.CV_FOURCC('M','J','P','G'), 30, (640, 480), 1)
+videoWriter = cv2.VideoWriter('out7Test1.avi', cv2.cv2.CV2_FOURCC('M','J','P','G'), 30, (640, 480), 1)
 
 #some image processing parameters
 cropArea = [0, 124, 637, 298]
@@ -46,7 +46,7 @@ rightLineColorModel = LaneMarkersModel()
 rightLine = LineDetector(cropArea, sensorsNumber, sensorsWidth, line1RStart, line1REnd, rightLineColorModel)
 
 frameNumber = 0
-while(cv.waitKey(1) != 27):
+while(cv2.waitKey(1) != 27):
     frameNumber+=1
     print frameNumber
     #read and crop
@@ -56,7 +56,7 @@ while(cv.waitKey(1) != 27):
     #do some preprocessing to share results later
     img = np.float32(imgFull[cropArea[1]:cropArea[3], cropArea[0]:cropArea[2]])/255.0
     hsv = np.float32(cv.cvtColor(img, cv.COLOR_RGB2HSV))
-    canny = cv.Canny(cv.cvtColor(np.uint8(img*255), cv.COLOR_RGB2GRAY), 70, 170)
+    canny = cv2.Canny(cv.cvtColor(np.uint8(img*255), cv.COLOR_RGB2GRAY), 70, 170)
  
     #make output images
     outputImg = img.copy()
@@ -67,10 +67,10 @@ while(cv.waitKey(1) != 27):
     rightLine.ProcessFrame(img, hsv, canny, outputImg, outputFull)
     
     #show output
-    cv.imshow("Output", outputImg)
-    cv.imshow("Output full", outputFull)
+    cv2.imshow("Output", outputImg)
+    cv2.imshow("Output full", outputFull)
     
     #write output
     videoWriter.write(outputFull)
     
-cv.destroyAllWindows()
+cv2.destroyAllWindows()
