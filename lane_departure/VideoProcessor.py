@@ -7,13 +7,13 @@ from LineDetector import LineDetector
 
 #Initialize video input
 #stream = cv.VideoCapture(0) #6 7 8
-stream = cv2.VideoCapture("T:\_DIMA_DATA\Video\LaneDepartureWarningTestVideo\converted\out6.avi") #6 7 8
+stream = cv2.VideoCapture("\home\pi\LDWS.mp4") #6 7 8
 if stream.isOpened() == False:
     print "Cannot open input video"
     exit()
 
 #Initialize video writing
-videoWriter = cv2.VideoWriter('out7Test1.avi', cv2.cv2.CV2_FOURCC('M','J','P','G'), 30, (640, 480), 1)
+videoWriter = cv2.VideoWriter('out7Test1.avi', cv.VideoWriter_fourcc('M','J','P','G'), 30, (640, 480), 1)
 
 #some image processing parameters
 cropArea = [0, 124, 637, 298]
@@ -56,7 +56,7 @@ while(cv2.waitKey(1) != 27):
     #do some preprocessing to share results later
     img = np.float32(imgFull[cropArea[1]:cropArea[3], cropArea[0]:cropArea[2]])/255.0
     hsv = np.float32(cv.cvtColor(img, cv.COLOR_RGB2HSV))
-    canny = cv2.Canny(cv.cvtColor(np.uint8(img*255), cv.COLOR_RGB2GRAY), 70, 170)
+    canny = cv2.Canny(cv2.cvtColor(np.uint8(img*255), cv2.COLOR_RGB2GRAY), 70, 170)
  
     #make output images
     outputImg = img.copy()
