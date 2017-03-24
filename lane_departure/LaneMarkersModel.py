@@ -1,11 +1,4 @@
-'''
-Created on Nov 26, 2011
-
-@author: Dima
-'''
-#!/bin/python
-
-import cv2 as cv
+import cv2
 import numpy as np
 
 def normalize(a):
@@ -19,22 +12,22 @@ class LaneMarkersModel():
         self.initialPoints = []
 
     def UpdateModelFromMask(self, mask, img, hsv):
-        self.avgRGB = cv.mean(img, mask)[0:3]
-        self.avgHSV = cv.mean(hsv, mask)[0:3]
-        distMap = cv.distanceTransform(1-mask, cv.cv.CV_DIST_L2, 5)[0]
+        self.avgRGB = cv2.mean(img, mask)[0:3]
+        self.avgHSV = cv2.mean(hsv, mask)[0:3]
+        distMap = cv2.distanceTransform(1-mask, cv2.cv.CV_DIST_L2, 5)[0]
         self.lineProbabilityMap = (1.0/(1.0+0.1*distMap))
         print self.avgRGB 
         print self.avgHSV 
-        #cv.imshow('test',self.lineProbabilityMap)
-        #cv.waitKey(1)
+        #cv2.imshow('test',self.lineProbabilityMap)
+        #cv2.waitKey(1)
     
     def InitializeFromImage(self, img, windowName):
-        cv.imshow(windowName, img)
-        cv.setMouseCallback(windowName, self.AddPoint, [img, windowName])
-        cv.waitKey(0)
+        cv2.imshow(windowName, img)
+        cv2.setMouseCallback(windowName, self.AddPoint, [img, windowName])
+        cv2.waitKey(0)
         
         #calculate average lane color
-        hsv = np.float32(cv.cvtColor(img, cv.COLOR_RGB2HSV))
+        hsv = np.float32(cv2.cvtColor(img, cv2.COLOR_RGB2HSV))
         
         if len(self.initialPoints)>0:
             flooded = np.uint8(img*255)
@@ -42,36 +35,36 @@ class LaneMarkersModel():
             largeMask[:] = 0
             lo = 20
             hi = 20
-            flags = cv.FLOODFILL_FIXED_RANGE
-            cv.floodFill(flooded, largeMask, (self.initialPoints[0][1], self.initialPoints[0][0]), (0, 255, 0), (lo,), (hi,), flags)
+            flags = cv2.FLOODFILL_FIXED_RANGE
+            cv2.floodFill(flooded, largeMask, (self.initialPoints[0][1], self.initialPoints[0][0]), (0, 255, 0), (lo,), (hi,), flags)
             mask = largeMask[1:largeMask.shape[0]-1, 1:largeMask.shape[1]-1]
-            cv.imshow(windowName, mask*255)
+            cv2.imshow(windowName, mask*255)
             self.UpdateModelFromMask(mask, img, hsv)
-        cv.destroyWindow(windowName)
+        cv2.destroyWindow(windowName)
 
     def AddPoint(self, event, x, y, flags, data):
-        if event & cv.EVENT_LBUTTONUP:
+        if event & cv2.EVENT_LBUTTONUP:
             #print x, y, data[0][y, x]
             self.initialPoints.append([y, x])
             imgWithLines = data[0]
             '''
             if len(self.initialPoints)>1:
-                cv.line(imgWithLines, (self.initialPoints[0][1], self.initialPoints[0][0]), (self.initialPoints[1][1], self.initialPoints[1][0]), [0,1,0], 2)
+                cv2.line(imgWithLines, (self.initialPoints[0][1], self.initialPoints[0][0]), (self.initialPoints[1][1], self.initialPoints[1][0]), [0,1,0], 2)
             if len(self.initialPoints)>3:
-                cv.line(imgWithLines, (self.initialPoints[2][1], self.initialPoints[2][0]), (self.initialPoints[3][1], self.initialPoints[3][0]), [0,1,0], 2)
+                cv2.line(imgWithLines, (self.initialPoints[2][1], self.initialPoints[2][0]), (self.initialPoints[3][1], self.initialPoints[3][0]), [0,1,0], 2)
             '''
             flooded = np.uint8(imgWithLines*255)
             mask = np.zeros((imgWithLines.shape[0]+2, imgWithLines.shape[1]+2), np.uint8)
             mask[:] = 0
             lo = 20
             hi = 200
-            flags = cv.FLOODFILL_FIXED_RANGE
-            cv.floodFill(flooded, mask, (self.initialPoints[0][1], self.initialPoints[0][0]), (0, 255, 0), (lo,)*3, (hi,)*3, flags)
-            cv.imshow(data[1], mask*255)
+            flags = cv2.FLOODFILL_FIXED_RANGE
+            cv2.floodFill(flooded, mask, (self.initialPoints[0][1], self.initialPoints[0][0]), (0, 255, 0), (lo,)*3, (hi,)*3, flags)
+            cv2.imshow(data[1], mask*255)
             
             
 
 if __name__ == '__main__':
-    img = cv.imread("C:\opencv\samples\cpp\lena.jpg")
+    img = cv2.imread("C:\Users\mmuno\Documents\opencv\sources\samples\data\lena.jpg")
     test = LaneMarkersModel()
     test.InitializeFromImage(np.float32(img)/255.0, 'test')

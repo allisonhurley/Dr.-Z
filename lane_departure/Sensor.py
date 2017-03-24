@@ -4,7 +4,7 @@ Created on Nov 27, 2011
 @author: Dima
 '''
 
-import cv2 as cv
+import cv2
 import numpy as np
 
 class LaneSensor():
@@ -24,7 +24,7 @@ class LaneSensor():
         self.width = width
 
     def DrawGeometry(self, img):
-        cv.line(img, (self.xPos, self.yPos), (self.xPos+self.width, self.yPos), [0, 0, 255])
+        cv2.line(img, (self.xPos, self.yPos), (self.xPos+self.width, self.yPos), [0, 0, 255])
     
     def InitializeModel(self, linergb, linehsv, roadrgb, roadhsv):
         self.lineRGB = linergb
@@ -87,7 +87,7 @@ class LaneSensor():
                 if abs((seg[1]-seg[0])-self.lineWidth[0]/self.lineWidth[1]) > 5+50/self.lineWidth[1]:
                     segmentProbability = 0
                     
-            cv.line(outputImg, (self.xPos+seg[0], self.yPos), (self.xPos+seg[1], self.yPos), [segmentProbability, segmentProbability, 0], 1)
+            cv2.line(outputImg, (self.xPos+seg[0], self.yPos), (self.xPos+seg[1], self.yPos), [segmentProbability, segmentProbability, 0], 1)
             if(segmentProbability == 1):
                 lineSegments.append([self.xPos+seg[0], self.xPos+seg[1]])
         
