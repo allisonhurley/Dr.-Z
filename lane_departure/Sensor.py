@@ -92,15 +92,17 @@ class LaneSensor():
                 lineSegments.append([self.xPos+seg[0], self.xPos+seg[1]])
         
         lineCenter = previousLineCenterPosition-self.xPos
+        '''
         if len(lineSegments) == 0 and len(segments) >= 3: #we have not found any line segments but we still have some segments 
             #lets try to recover and update the model if we have a segment which looks good
+
             for seg in segments:
                 if(seg[0] <= lineCenter and seg[1] >= lineCenter and self.lineWidth[1] > 10): #maybe it's actually a line...
                     if abs((seg[1]-seg[0])-self.lineWidth[0]/self.lineWidth[1]) < 10:
                         lineSegments.append([self.xPos+seg[0], self.xPos+seg[1]])
-        
+        '''
         return (len(lineSegments), lineSegments, segments)
-
+        
     def UpdatePositionAndModelFromRegion(self, rgbGlobal, hsvGlobal, region):
         x1 = region[0]
         x2 = region[1]

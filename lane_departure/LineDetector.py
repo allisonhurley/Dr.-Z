@@ -65,10 +65,10 @@ class LineDetector():
         testLineXAlertColor = np.array([0,255,0])/1.0
         testLineXDangerColor = np.array([0,0,255])/1.0
         
-        testLeftLineXAlert = 130
+        testLeftLineXAlert = 390
         testLeftLineXDanger = 230
 
-        testRightLineXAlert = 550
+        testRightLineXAlert = 390
         testRightLineXDanger = 450
 
         testLeftLineY = 129
@@ -110,13 +110,13 @@ class LineDetector():
         #alerts
         if lanePosition == 'AlertLeft' or lanePosition == 'DangerLeft':
             cv2.line(outputFull, (img.shape[1]/2,50), (img.shape[1]/2-25,75), lanePositionColor, 15)
-            #cv2.line(outputFull, (img.shape[1]/2,100), (img.shape[1]/2-25,75), lanePositionColor, 15)
+            cv2.line(outputFull, (img.shape[1]/2,100), (img.shape[1]/2-25,75), lanePositionColor, 15)
         if lanePosition == 'DangerLeft':
             cv2.line(outputFull, (img.shape[1]/2-30,50), (img.shape[1]/2-25-30,75), lanePositionColor, 15)
             cv2.line(outputFull, (img.shape[1]/2-30,100), (img.shape[1]/2-25-30,75), lanePositionColor, 15)
         if lanePosition == 'AlertRight' or lanePosition == 'DangerRight':
             cv2.line(outputFull, (img.shape[1]/2,50), (img.shape[1]/2+25,75), lanePositionColor, 15)
-            #cv2.line(outputFull, (img.shape[1]/2,100), (img.shape[1]/2+25,75), lanePositionColor, 15)
+            cv2.line(outputFull, (img.shape[1]/2,100), (img.shape[1]/2+25,75), lanePositionColor, 15)
         if lanePosition == 'DangerRight':
             cv2.line(outputFull, (img.shape[1]/2+30,50), (img.shape[1]/2+25+30,75), lanePositionColor, 15)
             cv2.line(outputFull, (img.shape[1]/2+30,100), (img.shape[1]/2+25+30,75), lanePositionColor, 15)
