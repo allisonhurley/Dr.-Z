@@ -21,7 +21,7 @@ import time
 import serial
 
 GPIO.setwarnings(False)
-
+'''
 ser = serial.Serial(
 
 	port='/dev/ttyS0' ,
@@ -31,7 +31,7 @@ ser = serial.Serial(
 	bytesize=serial.EIGHTBITS,
 	timeout=1
 )
-
+'''
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(Phone_PIN, GPIO.IN, pull_up_down = GPIO.PUD_DOWN) #Create input pin for Phone Signal with pull down resistor
 #GPIO.setup(DistFace1_PIN, GPIO.IN, pull_up_down =GPIO.PUD_DOWN)#Create input pin for Facial Distraction Signal with pull down resistor
@@ -47,7 +47,6 @@ GPIO.setup(Voice1_PIN, GPIO.OUT)#Create Output pin for Voice signal
 GPIO.setup(Voice2_PIN, GPIO.OUT)#Create Output pin for Voice 2 signal
 GPIO.setup(Atomizer_PIN, GPIO.OUT)#Create Output pin for Atomizer signal
 
-global out_Hazards, out_Atomizer,out_Vibration,out_Voice1,out_Voice2
 
 out_Hazards = 0
 out_Atomizer = 0
@@ -56,6 +55,7 @@ out_Voice1 = 0
 out_Voice2 = 0
 
 def resetOutputs():
+	global out_Hazards, out_Atomizer,out_Vibration,out_Voice1,out_Voice2
 	out_Hazards = 0
 	out_Atomizer = 0
 	out_Vibration = 0
@@ -71,9 +71,10 @@ in_Lane=0
 #in_DrwFace1=0
 #in_DrwFace2=0
 in_Voice=0
-global in_Phone, in_Voice, in_Lane , in_DistFace1, in_DistFace2, in_DrwFace1, in_DrwFace2 
+ 
 
 def updateInput():
+	global in_Phone, in_Voice, in_Lane , in_DistFace1, in_DistFace2, in_DrwFace1, in_DrwFace2
 	in_Phone = GPIO.input(Phone_PIN)
 	#in_DistFace1 = GPIO.input(DistFace1_PIN)
 	#in_DistFace2 = GPIO.input(DistFace2_PIN)
@@ -91,7 +92,7 @@ def printStates():
 		print " {} {} {} {} | {}  {}  {}  {}  {} ".format(in_Phone, in_distFace1 ,in_Voice, in_Lane, out_Atomizer, out_Vibration, out_Voice1, out_Voice2, out_Hazards)
 		print "\n"
 		
-
+'''
 def readInputLane():
 	input=ser.readline()
 	if input[0:6]=="LANE_1":
@@ -113,7 +114,7 @@ def readInputFace():
 		in_distFace1=0
 		return in_distFace1
 	
-			
+'''			
 
 def updateLogic():
 
@@ -201,14 +202,14 @@ def updateOutput():
 	
 
 
-ser.flushInput()
-while 1==1:
+#ser.flushInput()
+while True:
 	'''
 	in_Lane=1
 	in_Voice=1
 	in_distFace1=1
 	in_Phone=1
-	#'''
+	'''
 	resetOutputs()
 	updateInput()
 	updateLogic()
