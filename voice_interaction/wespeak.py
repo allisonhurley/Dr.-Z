@@ -1,27 +1,24 @@
+from subprocess import call
 import RPi.GPIO as GPIO
 import time
+import re
 GPIO.setmode(GPIO.BOARD)
 from tailf import tailf
 GPIO.setup(7, GPIO.OUT)
 
-for line in tailf("jasper.log"):
-	
-	def process_matches(matchtext):
-		while True:
-			line = (yield) 
-			if matchtext in line:
-				call(["aplay", okay.wav]) 
-				GPIO.output(7,1)
+def process_match(cmd):
+	if cmd == "ON NOW":
+		call(["aplay", "-D", "hw:CARD=ALSA,DEV=0", "okay.wav"])
+		GPIO.output(7,1)
 
-	list_of_matches = ['ON NOW']	
-	matches = [process_matches(string_match) for string_match in list_of_matches]
+	elif cmd == "JASPER":
+		print "Hi Allison"
 
-	for m in matches: 
-		m.next()
+rex = re.compile("INFO:client.stt:Transcribed: \\['(.*)'\\]")
 
-	while True: 
-		auditlog = tail( open(log_file_to_monitor) )
-		for line in auditlog:
-			for m in matches:
-				m.send(line)
-done
+for line in tailf("/home/pi/jasper.log"):
+
+ 	match = rex.search(line)
+	if match:
+		process_match(match.group(1))
+
