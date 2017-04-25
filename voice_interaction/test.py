@@ -1,4 +1,4 @@
-mport RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 GPIO.setmode(GPIO.BOARD)
 
@@ -10,10 +10,10 @@ from subprocess import call
 status = 0
 while True:
 	new_status = 0
-	if (GPIO.input(11) == 1:
+	if (GPIO.input(11) == 1):
 		new_status = 1
 
-	if (GPIO.input(13) == 1:
+	if (GPIO.input(13) == 1):
 		new_status = new_status + 2
 
 	if new_status != status:
@@ -31,7 +31,7 @@ while True:
 			call(["aplay", "-D", "hw:CARD=ALSA,DEV=0", "stay.wav"])
 
 		if status == 3:
-			print("Driver is shleepin")
+			print("Driver is sleeping")
 			call(["aplay", "-D", "hw:CARD=ALSA,DEV=0", "wakeup.wav"])
 
 	time.sleep(1)

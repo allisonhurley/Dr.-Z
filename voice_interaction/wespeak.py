@@ -10,7 +10,7 @@ def process_match(cmd):
 	if cmd == "ON NOW":
 		call(["aplay", "-D", "hw:CARD=ALSA,DEV=0", "okay.wav"])
 		GPIO.output(7,1)
-
+		print line	
 	elif cmd == "JASPER":
 		print "Hi Allison"
 
