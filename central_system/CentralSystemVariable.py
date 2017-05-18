@@ -21,7 +21,7 @@ import time
 import serial
 
 GPIO.setwarnings(False)
-'''
+
 ser = serial.Serial(
 
 	port='/dev/ttyS0' ,
@@ -31,7 +31,7 @@ ser = serial.Serial(
 	bytesize=serial.EIGHTBITS,
 	timeout=1
 )
-'''
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(Phone_PIN, GPIO.IN, pull_up_down = GPIO.PUD_DOWN) #Create input pin for Phone Signal with pull down resistor
 #GPIO.setup(DistFace1_PIN, GPIO.IN, pull_up_down =GPIO.PUD_DOWN)#Create input pin for Facial Distraction Signal with pull down resistor
@@ -82,23 +82,22 @@ def updateInput():
 	#in_DrwFace1 = GPIO.input(DrwFace1_PIN)
 	#in_DrwFace2 = GPIO.input(DrwFace2_PIN)
 	in_Voice = GPIO.input(Voice_PIN)
-	#readInputLane()
-	#readInputFace()
+	readInputLane()
+        readInputFace()
 
 def printStates():
 		#print " P F1 F2 F3 F4 Vo L | A Vb Vo1 Vo2 H "
 		#print " {} {} {} {} {} {} {} | {}  {}  {}  {}  {} ".format(in_Phone, in_Voice, readInputLane(), out_Atomizer, out_Vibration, out_Voice1, out_Voice2, out_Hazards) #in_DistFace, in_DistFace2, in_DrwFace, in_DrwFace2,
 		print " P F Vo L | A Vb Vo1 Vo2 H "
-		print " {} {} {} {} | {}  {}  {}  {}  {} ".format(in_Phone, in_distFace1 ,in_Voice, in_Lane, out_Atomizer, out_Vibration, out_Voice1, out_Voice2, out_Hazards)
+		print " {} {} {} {} | {}  {}  {}  {}  {} ".format(in_Phone, in_distFace1, in_drwFace1, in_Voice, in_Lane, out_Atomizer, out_Vibration, out_Voice1, out_Voice2, out_Hazards)
 		print "\n"
-		
-'''
+
 def readInputLane():
 	input=ser.readline()
-	if input[0:6]=="LANE_1":
+	if input[0:7]=="LANE_1":
 		in_Lane=1
 		return in_Lane
-	elif input[0:6]=="LANE_0":
+	elif input[0:7]=="LANE_0":
 		in_Lane=0
 		return in_Lane
 		
@@ -107,31 +106,33 @@ def readInputLane():
 		
 def readInputFace():
 	input=ser.readline()
-	if input[0:6]=="DIST_1":
+	if input[0:7]=="DIST_1":
 		in_distFace1=1
 		return in_distFace1
-	elif input[0:6]=="DIST_0":
+	elif input[0:7]=="DIST_0":
 		in_distFace1=0
 		return in_distFace1
+	if input[0:7]=="DRW_1":
+                in_drwFace1=1
+                return in_drwFace1
+        elif input[0:7]=="DRW_1":
+                in_drwFace1=0
+                return in_drwFace1
 	
-'''			
+		
 
 def updateLogic():
 
 	global out_Hazards, out_Voice1, out_Voice2, out_Vibration, out_Atomizer
 
-	'''
-	if in_Phone and in_distFace1 and in_distFace2:
+	if in_Phone and in_distFace1:
 		out_Hazards=1
 		out_Voice2=1 
-	'''
+
 	if in_distFace1:
 		out_Voice1=1
-	'''
-	if in_distFace2:
-		out_Hazards=1
-		out_Voice1=1 
-	'''
+		out_Voice2=1
+		out_Hazards=1 
 	if in_Lane:
 		out_Vibration=1
 	if in_Voice:
@@ -143,27 +144,15 @@ def updateLogic():
 	if in_Phone:
 		out_Hazards=1
 		out_Voice2=1
-	'''
-	if in_Phone and in_Lane and in_distFace1 and in_distFace2:
+	if in_Phone and in_Lane and in_distFace1:
 		out_Hazards=1
 		out_Voice1=1
 		out_Vibration=1
-	'''
-	'''
 	if in_drwFace1:
 		out_Atomizer=1
-	if in_drwFace2:
-		out_Vibration=1	
 		out_Voice1=1
 		out_Voice2=1
-	'''
 	if in_Voice and in_Lane:
-		out_Vibration=1
-		out_Voice1=1
-		out_Voice2=1
-		out_Hazards=1
-	'''
-	if in_drwFace2 and in_Lane:
 		out_Vibration=1
 		out_Voice1=1
 		out_Voice2=1
@@ -172,26 +161,16 @@ def updateLogic():
 		out_Vibration=1
 		out_Voice1=1
 		out_Voice2=1
-	'''
-	'''
-	if in_Voice: and in_drwFace2:
-		out_Vibration=1
+	if in_Voice: and in_drwFace1:
+		out_Atomizer=1
 		out_Voice1=1
 		out_Voice2=1
-	'''
-	'''
-	if in_Phone and in_drwFace1  and in_drwFace2 and in_Lane:
+	if in_Phone and in_drwFace1 and in_Lane:
 		out_Vibration=1
 		out_Voice1=1
 		out_Voice2=1
 		out_Hazards=1
-	'''
-	'''
-	if in_Voice: #and in_drwFace2:
-		out_Vibration=1
-		out_Voice1=1
-		out_Voice2=1
-	'''
+
 
 def updateOutput():
 	GPIO.output(Hazards_PIN, out_Hazards)
