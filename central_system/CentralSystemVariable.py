@@ -83,7 +83,7 @@ def updateInput():
 	#in_DrwFace2 = GPIO.input(DrwFace2_PIN)
 	in_Voice = GPIO.input(Voice_PIN)
 	readInputLane()
-        readInputFace()
+	readInputFace()
 
 def printStates():
 		#print " P F1 F2 F3 F4 Vo L | A Vb Vo1 Vo2 H "
@@ -113,11 +113,11 @@ def readInputFace():
 		in_distFace1=0
 		return in_distFace1
 	if input[0:7]=="DRW_1":
-                in_drwFace1=1
-                return in_drwFace1
-        elif input[0:7]=="DRW_1":
-                in_drwFace1=0
-                return in_drwFace1
+		in_drwFace1=1
+		return in_drwFace1
+	elif input[0:7]=="DRW_1":
+		in_drwFace1=0
+		return in_drwFace1
 	
 		
 
@@ -161,7 +161,7 @@ def updateLogic():
 		out_Vibration=1
 		out_Voice1=1
 		out_Voice2=1
-	if in_Voice: and in_drwFace1:
+	if in_Voice and in_drwFace1:
 		out_Atomizer=1
 		out_Voice1=1
 		out_Voice2=1
